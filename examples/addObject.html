@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Canvimator</title>
+	</head>
+	<body>
+		
+		<canvas id="game" height="500" width="800"></canvas>
+		
+		<script src="../canvimator.js"></script>
+		
+		<script>
+		(function() {
+			
+			// Startup Canvimator w/ the ID of the canvas in question
+		    var canv   = new CANVIMATOR('game',{
+		        timeout : 15		// you may wanna set the timeout to be browser specific
+		    });
+
+			// Add a custom object
+			canv.defaultObjects.deathStar = function(obj) {
+				canv.ctx.beginPath();
+				canv.ctx.arc(obj.x, obj.y, obj.radius, Math.PI*1.5, Math.PI*2, true);
+				canv.ctx.closePath();
+				canv.ctx.fill();
+			}
+
+		    //* Setup our Objects
+		    var deathStar = canv.addObject({
+		        type    : 'deathStar',
+				x       : 30,
+		        y       : 30,
+		        radius  : 10,
+		    });
+		    //*/
+
+		    canv.draw();        // draw the board
+
+		    //* animations go here
+		    deathStar.animate({
+		        x:500,
+		        y:300,
+		        radius:100
+		    },1500,function() {
+		        deathStar.animate({
+		            x : 500,
+		            y : 50,
+		            radius : 30
+		        },1000)
+				deathStar.change({
+	            	color:'rgba(33,33,255,0.2)',
+				},500,function() {
+					deathStar.animate({
+						x : 440
+					},550)
+				})
+		    })
+
+
+		    //*/
+
+		})()
+		</script>
+	</body>
+</html>

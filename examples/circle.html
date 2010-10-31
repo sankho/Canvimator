@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Canvimator</title>
+	</head>
+	<body>
+		
+		<canvas id="game" height="500" width="800"></canvas>
+		
+		<script src="../canvimator.js"></script>
+		
+		<script>
+		(function() {
+			
+			// Startup Canvimator w/ the ID of the canvas in question
+		    var canv   = new CANVIMATOR('game',{
+		        timeout : 15		// you may wanna set the timeout to be browser specific
+		    });
+
+		    //* Setup our Objects
+		    var circle = canv.addObject({
+		        type	: 'circle',
+				x       : 30,
+		        y       : 30,
+		        radius  : 10,
+		    });
+
+		    canv.draw();        // draw the board
+
+		    //* animations go here
+		    circle.animate({
+		        x:500,
+		        y:300,
+		        radius:100
+		    },1500,function() {
+		        circle.animate({
+		            x : 500,
+		            y : 50,
+		            radius : 30,
+		            color:'rgba(33,33,255,0.2)'
+		        },1000)
+		    });
+		    //*/
+
+		})()
+		</script>
+	</body>
+</html>
