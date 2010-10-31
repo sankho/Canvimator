@@ -66,7 +66,13 @@
         isDrawing = false;
         
     }
-
+    
+    function scheduleDraw() {
+        if (!isDrawing) {
+            draw();
+        }
+    }
+    
     var clear = function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -289,13 +295,8 @@
         }
         
     }
-    
-    function scheduleDraw() {
-        if (!isDrawing) {
-            draw();
-        }
-    }
-    
+
+    // Attach a few more public functions...
     this.draw  = draw;
     this.clear = clear;
     
