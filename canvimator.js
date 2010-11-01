@@ -185,9 +185,9 @@
         }
         
         obj.color = "rgb(" + [
-            Math.max(Math.min( parseInt((obj.pos * (obj.endColor[0] - obj.startColor[0])) + obj.startColor[0]), 255), 0),
-            Math.max(Math.min( parseInt((obj.pos * (obj.endColor[1] - obj.startColor[1])) + obj.startColor[1]), 255), 0),
-            Math.max(Math.min( parseInt((obj.pos * (obj.endColor[2] - obj.startColor[2])) + obj.startColor[2]), 255), 0)
+            Math.max(Math.min( parseInt((obj.percent * (obj.endColor[0] - obj.startColor[0])) + obj.startColor[0]), 255), 0),
+            Math.max(Math.min( parseInt((obj.percent * (obj.endColor[1] - obj.startColor[1])) + obj.startColor[1]), 255), 0),
+            Math.max(Math.min( parseInt((obj.percent * (obj.endColor[2] - obj.startColor[2])) + obj.startColor[2]), 255), 0)
         ].join(",") + ")";
     }
 
@@ -335,25 +335,29 @@
                             end     : endOptions[opt],
                             begin   : objects[objectName][opt]
                         }
+                        if (opt === 'color') {
+                            objects[objectName].endColor   = changes.color.end   || globalOptions.color;
+                            objects[objectName].startColor = changes.color.begin || globalOptions.color;
+                        }
                     }
                 }
                 
                 var times = Math.floor(time / globalOptions.timeout);
                 
-                function doit(timeout,time) {
+                function adjustValuesAndDraw(timeout,time) {
                     
                     if (time > 0) {
+                        
+                        // the percentage of time elapsed out of the entire animation 
+                        var percent = objects[objectName].percent = (times-time+1) * (1 / times);
                         
                         for (opt in changes) {
                             if (opt === 'color' && changes[opt]) {
                                 // color blending goes here
                                 /** BIG TODO - adjust private getRGB function to read & spit RGBa **/
-                                var interval                   = 1 / times;
-                                objects[objectName].endColor   = changes.color.end   || globalOptions.color;
-                                objects[objectName].startColor = changes.color.begin || globalOptions.color;
-                                objects[objectName].pos        = (times-time+1) * interval;
                                 colorChange(objects[objectName]);
                             } else {
+                                // normal integer based stuff i.e. coors width radius etc
                                 var endVal   = changes[opt].end;
                                 var startVal = changes[opt].begin;
                                 var interval = (endVal - startVal) / times;
@@ -367,7 +371,7 @@
                         scheduleDraw();
                         
                         setTimeout(function() {
-                            doit(timeout,time);
+                            adjustValuesAndDraw(timeout,time);
                         },timeout);
                         
                     } else if (typeof callback === 'function') {
@@ -376,7 +380,7 @@
                     
                 }
                 
-                doit(globalOptions.timeout,times);
+                adjustValuesAndDraw(globalOptions.timeout,times);
                     
             },
             
