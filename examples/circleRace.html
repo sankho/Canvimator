@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Canvimator</title>
+	</head>
+	<body>
+		
+		<canvas id="game" height="500" width="800"></canvas>
+		
+		<script src="../canvimator.js"></script>
+		
+		<script>
+		(function() {
+			
+			// Startup Canvimator w/ the ID of the canvas in question
+		    var canv   = new CANVIMATOR('game',{
+		        timeout : 15		// you may wanna set the timeout to be browser specific
+		    });
+            
+            var circleCount    = 10,
+                circles        = [],
+                x              = 100,
+                y              = 10,
+                xInterval      = 20,
+                yInterval      = 38;
+            
+            for (var i=0; i<circleCount; i++) {
+                
+                circles.push(canv.addObject({
+                    type    : 'circle',
+                    x       : x,
+                    y       : y,
+                    radius  : 5
+                }));
+                
+                canv.draw();
+                
+            }
+            
+            function doAnimation(direction) { 
+                for (var i=0; i<circles.length; i++) {
+                
+                    var rules = {};
+                    if (direction === 'y') {
+                        rules.y = y = y + yInterval;
+                    } else {
+                        rules.x = x = x + xInterval;
+                    }
+
+                    var callback = null;
+                    
+                    if (i === circles.length-1) {
+                        callback = function() {
+                            if (!direction) {
+                                console.log(circles.length, i);
+                                doAnimation('y')
+                            }
+                        }
+                    }
+
+                    circles[i].animate(rules, 300, callback);
+                                        
+                }
+            }
+
+            setTimeout(function() {
+                doAnimation();
+            },200);
+
+		})()
+		</script>
+	</body>
+</html>
