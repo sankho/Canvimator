@@ -10,20 +10,18 @@
     
     /** PRIVATE FUNCTIONS AND VARIABLES BELOW **/
     
-    // set up our variables...
+    // You never know.
     if (canvasId.indexOf('#') !== -1) {
         canvasId.replace('#','');
     }
 
-    canvas = this.canvas = document.getElementById(canvasId);
-    ctx = this.ctx = canvas.getContext('2d');
+    // Our canvas and context elements, respectively
+    var canvas = this.canvas = document.getElementById(canvasId);
+    var ctx    = this.ctx    = canvas.getContext('2d');
     
     // Some private vars
     var isDrawing = false;
 
-    // Our canvas and context elements, respectively
-    var canvas,ctx;
-    
     // extend options
     var globalOptions = extend({
         timeout   : 30,         // how often the board gets redrawn,
@@ -47,7 +45,7 @@
       ctx.fill();
     }
 
-    var draw = function(objectName) {
+    function draw(objectName) {
         
         isDrawing = true;
         clear();
@@ -73,7 +71,7 @@
         }
     }
     
-    var clear = function() {
+    function clear() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
