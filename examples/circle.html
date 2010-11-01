@@ -25,7 +25,7 @@
 		        y       : 30,
 		        radius  : 10,
 		    });
-
+			
 		    canv.draw();        // draw the board
 
 		    //* animations go here
@@ -34,15 +34,21 @@
 		        y:300,
 		        radius:100
 		    },1500,function() {
-		        circle.animate({
-		            x : 500,
-		            y : 50,
-		            radius : 30,
-		            color:'rgba(33,33,255,0.2)'
-		        },1000)
+				circle.animate({
+					color	: 'lightYellow',
+					x		: 420,
+					y		: 250
+				},200,function() { 
+		        	circle.animate({
+		        	    x 		: 500,
+		        	    y 		: 50,
+		        	    radius  : 30,
+		        	    color	:'rgb(222,33,33);'
+		        	},1000);
+				});
 		    });
 		    //*/
-
+		
 		})()
 		</script>
 	</body>
