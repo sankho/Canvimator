@@ -15,7 +15,8 @@
 			
 			// Startup Canvimator w/ the ID of the canvas in question
 		    var canv   = new CANVIMATOR('game',{
-		        timeout : 15		// you may wanna set the timeout to be browser specific
+		        timeout : 15,
+				color	: 'darkgreen'
 		    });
 
 		    //* Setup our Objects
@@ -78,7 +79,8 @@
 		        square.animate({
 		            x:10,
 		            y:200,
-		            side:100
+		            side:100,
+					color:'#000'
 		        },700)
 		    },200);
 		    //*/
