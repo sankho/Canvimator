@@ -10,31 +10,28 @@ I'd check the examples folder, if I were you.
 
 But here's the skinny. Let's say you have an HTML document with a Canvas tag with an ID of.... "canvas." Here's how you would add a circle, and then animate it's position and color, twice.
 
-var canv = new CANVIMATOR('canvas');
-
-{
-var circle = canv.addObject({
-    type    : 'circle',
-    x       : 30,
-    y       : 30,
-    radius  : 10,
-    color   : '#fff'
-});
-}
-
-{
-circle.animate({
-    x       : 100,
-    y       : 100,
-    color   : 'rgb(232,33,33)'
-},1500,function() {
+    var canv = new CANVIMATOR('canvas');
+    
+    
+    var circle = canv.addObject({
+        type    : 'circle',
+        x       : 30,
+        y       : 30,
+        radius  : 10,
+        color   : '#fff'
+    });
+    
     circle.animate({
-        x    : 100,
-        y    : 10,
-        color: '#333'
-    })
-});
-}
+        x       : 100,
+        y       : 100,
+        color   : 'rgb(232,33,33)'
+    },1500,function() {
+        circle.animate({
+            x    : 100,
+            y    : 10,
+            color: '#333'
+        })
+    });
 
 This is very much under development, so if you wanna use it, please refer to the comments in the code.
 
