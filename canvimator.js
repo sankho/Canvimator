@@ -27,27 +27,58 @@
 
     // extend options
     var globalOptions = extend({
-        timeout   : 30,         // how often the board gets redrawn,
+        timeout   : 20,         // how often the board gets redrawn,
         color     : '#000'
     },userOptions);
 
     // This object stores all our objects on the board
     var objects = {};
     
-    function circle(x,y,r) {
+    /**
+     * Draws a circle
+     *
+     * @param {int} x
+     * @param {int} y
+     * @param {int} r
+     * @param {bool} stroke
+     */
+    function circle(x,y,r,stroke) {
         ctx.beginPath();
         ctx.arc(x, y, r, 0, Math.PI*2, true);
         ctx.closePath();
-        ctx.fill();
+        if (stroke) {
+            ctx.stroke();
+        } else {
+            ctx.fill();
+        }
     }
     
-    function rect(x,y,w,h) {
-      ctx.beginPath();
-      ctx.rect(x,y,w,h);
-      ctx.closePath();
-      ctx.fill();
+    /**
+     * Draws a rectangle
+     *
+     * @param {int} x
+     * @param {int} y
+     * @param {int} w
+     * @param {int} h
+     * @param {bool} stroke
+     */
+    function rect(x,y,w,h,stroke) {
+        ctx.beginPath();
+        ctx.rect(x,y,w,h);
+        ctx.closePath();
+        if (stroke) {
+            crx.stroke();
+        } else {
+            ctx.fill();
+        }
     }
 
+    /**
+     * Draws the canvas! Iterates over each object and calls
+     * their function based on their defaultObject type
+     *
+     * @param {string} objectName
+     */
     function draw(objectName) {
         
         isDrawing = true;
@@ -59,7 +90,9 @@
                 ctx.fillStyle = obj.color;
             }
             
-            defaultObjects[obj.type](obj);
+            if (!obj.hide) {
+                defaultObjects[obj.type](obj);
+            }
             
             ctx.fillStyle = globalOptions.color;
         }
@@ -68,19 +101,31 @@
         
     }
     
+    /**
+     * Schedules the CANVIMATOR to draw the board w/ new paramaters
+     * I dunno if this is necessary, really. I just figured there
+     * would be clashing type issues to deal with later on.
+     *
+     * @private
+     */
     function scheduleDraw() {
         if (!isDrawing) {
             draw();
         }
     }
     
+    /**
+     * Clears the canvas
+     *
+     * @private
+     */
     function clear() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     /**********************************************************
     * the following functions are all borrowed from the jQuery
-    * of possibly from jQuery functions... yes
+    * or the jQuery UI
     **********************************************************///*
     function extend() {
         // copy reference to target object
@@ -284,16 +329,22 @@
 
     //** PUBLIC FUNCTIONS AND VARIABLES BEGIN **//
 
+    /**
+     * This object contains the functions that draw predefined
+     * objects e.g. circles, rectangles, squares, etc. Can be 
+     * extended after the main CANVIMATOR constructor function
+     * is called
+     */
     var defaultObjects = this.defaultObjects = {
         
         circle : function(obj) {
-            circle(obj.x,obj.y,obj.radius);
+            circle(obj.x,obj.y,obj.radius,obj.stroke);
         },
         rect   : function(obj) {
-            rect(obj.x,obj.y,obj.width,obj.height);
+            rect(obj.x,obj.y,obj.width,obj.height,obj.stroke);
         },
         square : function(obj) {
-            rect(obj.x,obj.y,obj.side,obj.side);
+            rect(obj.x,obj.y,obj.side,obj.side,obj.stroke);
         }
         
     };
@@ -303,10 +354,11 @@
      * that lets you declare objects as JS variables and animate them and shit. Pretty cool.
      *
      * @param {object} options
-     * @private
+     * @public
      */
     this.addObject = function(options) {
-        var objectName = options.type + new Date().getTime() + Math.floor(Math.random()*111);
+        var isRemoved       = false;
+        var objectName      = options.type + new Date().getTime() + Math.floor(Math.random()*111);
         objects[objectName] = options;
         
         /**
@@ -324,7 +376,7 @@
              * @param {function} callback
              */
             animate : function(endOptions,time,callback) {
-                
+                    
                 var time = time || 500;
                 
                 var changes    = {};
@@ -344,12 +396,18 @@
                 
                 var times = Math.floor(time / globalOptions.timeout);
                 
+                /**
+                 * The recursive function that adjusts an object's values
+                 * over time to create an animation effect
+                 *
+                 * @param {integer} timeout
+                 * @param {integer} time
+                 */
                 function adjustValuesAndDraw(timeout,time) {
-                    
-                    if (time > 0) {
-                        
+                                        
+                    if (time > 0 && !isRemoved) {
                         // the percentage of time elapsed out of the entire animation 
-                        var percent = objects[objectName].percent = (times-time+1) * (1 / times);
+                        objects[objectName].percent = (times-time+1) * (1 / times);
                         
                         for (opt in changes) {
                             if (opt === 'color' && changes[opt]) {
@@ -404,6 +462,49 @@
                 },time);
             },
             
+            /**
+             * Removes an object from the canvas
+             *
+             * @public
+             */
+            remove : function() {
+                if (!isDrawing) {
+                    delete objects[objectName];
+                    isRemoved = true;
+                    scheduleDraw();
+                } else {
+                    this.remove();
+                }
+            },
+
+            /**
+             * Hides the object
+             *
+             * @public
+             */
+            hide : function() {
+                objects[objectName].hide = true;
+                scheduleDraw();
+            },
+            
+            /**
+             * Shows the object if hidden
+             *
+             * @public
+             */
+            show : function() {
+                if (objects[objectName].hide) {
+                    objects[objectName].hide = false;
+                    scheduleDraw();
+                }
+            },
+            
+            /**
+             * The current options for the object in question
+             * Might be useful if it's public.
+             * 
+             * @public
+             */
             options : objects[objectName]
         }
         
