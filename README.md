@@ -12,6 +12,7 @@ But here's the skinny. Let's say you have an HTML document with a Canvas tag wit
 
 var canv = new CANVIMATOR('canvas');
 
+{
 var circle = canv.addObject({
     type    : 'circle',
     x       : 30,
@@ -19,7 +20,9 @@ var circle = canv.addObject({
     radius  : 10,
     color   : '#fff'
 });
+}
 
+{
 circle.animate({
     x       : 100,
     y       : 100,
@@ -31,6 +34,7 @@ circle.animate({
         color: '#333'
     })
 });
+}
 
 This is very much under development, so if you wanna use it, please refer to the comments in the code.
 
