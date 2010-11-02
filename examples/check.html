@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Canvimator</title>
+	</head>
+	<body>
+		
+		<canvas id="game" height="500" width="800"></canvas>
+		
+		<script src="../canvimator.js"></script>
+		
+		<script>
+		(function() {
+			
+			// Startup Canvimator w/ the ID of the canvas in question
+		    var canv   = new CANVIMATOR('game',{
+		        timeout : 15		// you may wanna set the timeout to be browser specific
+		    });
+            
+            var x = 200, y = 200;
+            
+            function createCircles(time) {
+                if (time > 0) {
+                    time--;
+                    console.log(times,time,times/time);
+                    if (times / time > 1.6) {
+                        y -= 30;
+                        x += 15;
+                    } else {
+                        x  += 30;
+                        y   = x;
+                    }
+                    
+                    var circle = canv.addObject({
+                        type    : 'circle',
+                        x       : x,
+                        y       : y,
+                        radius  : 15
+                    });
+                    
+                    canv.draw();
+                    
+                    circle.animate({
+                        y       : y,
+                        radius  : 30,
+                        color   : '#d33'
+                    },150, function() {
+                        createCircles(time);
+                    });
+                }
+            }
+            var times = 11;
+            createCircles(times);
+
+		})()
+		</script>
+	</body>
+</html>
