@@ -12,7 +12,6 @@ But here's the skinny. Let's say you have an HTML document with a Canvas tag wit
 
     var canv = new CANVIMATOR('canvas');
     
-    
     var circle = canv.addObject({
         type    : 'circle',
         x       : 30,
