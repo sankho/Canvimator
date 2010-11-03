@@ -27,14 +27,6 @@
 		        radius  : Math.floor(Math.random()*80),
 		    });
 
-		    var rect = canv.addObject({
-		        type    : 'rect',
-		        x       : 10,
-		        y       : 10,
-		        width   : 10,
-		        height  : 10,
-		    });
-
 		    var square = canv.addObject({
 		        type    : 'square',
 		        x       : 300,
@@ -61,6 +53,13 @@
 		
 			//*
 		    setTimeout(function() {
+    		    var rect = canv.addObject({
+    		        type    : 'rect',
+    		        x       : 10,
+    		        y       : 10,
+    		        width   : 10,
+    		        height  : 10,
+    		    });
 		        rect.animate({
 		            x:300,
 		            y:50,

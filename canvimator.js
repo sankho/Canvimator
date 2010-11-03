@@ -26,7 +26,7 @@
     var rtrim = /^(\s|\u00A0)+|(\s|\u00A0)+$/g;
 
     // extend options
-    var globalOptions = extend({
+    var globalOptions = this.globalOptions = extend({
         timeout   : 20,         // how often the board gets redrawn,
         color     : '#000'
     },userOptions);
@@ -191,7 +191,7 @@
     };
 
     function isArray( obj ) {
-        return toString.call(obj) === "[object Array]";
+        return obj.toString() === "[object Array]";
     };
 
     function isPlainObject( obj ) {
@@ -358,7 +358,7 @@
      */
     this.addObject = function(options) {
         var isRemoved       = false;
-        var objectName      = options.type + new Date().getTime() + Math.floor(Math.random()*111);
+        var objectName      = options.type + new Date().getTime() + Math.floor(Math.random()*999999);
         objects[objectName] = options;
         
         /**
@@ -379,8 +379,10 @@
                     
                 var time = time || 500;
                 
+                // an object to store what options are being changed to this canvas object
                 var changes    = {};
                 
+                // iterate over each option and add to changes when necessary
                 for (opt in endOptions) {
                     if (endOptions[opt] !== objects[objectName][opt]) {
                         changes[opt] = {
@@ -394,7 +396,11 @@
                     }
                 }
                 
+                // get the amount of times the animation should occur to reach it's end point
                 var times = Math.floor(time / globalOptions.timeout);
+                
+                // fires the function below & starts the animation
+                adjustValuesAndDraw(times);
                 
                 /**
                  * The recursive function that adjusts an object's values
@@ -403,7 +409,7 @@
                  * @param {integer} timeout
                  * @param {integer} time
                  */
-                function adjustValuesAndDraw(timeout,time) {
+                function adjustValuesAndDraw(time) {
                                         
                     if (time > 0 && !isRemoved) {
                         // the percentage of time elapsed out of the entire animation 
@@ -429,16 +435,14 @@
                         scheduleDraw();
                         
                         setTimeout(function() {
-                            adjustValuesAndDraw(timeout,time);
-                        },timeout);
+                            adjustValuesAndDraw(time);
+                        },globalOptions.timeout);
                         
                     } else if (typeof callback === 'function') {
                         callback();
                     }
                     
                 }
-                
-                adjustValuesAndDraw(globalOptions.timeout,times);
                     
             },
             
