@@ -358,7 +358,7 @@
      */
     this.addObject = function(options) {
         var isRemoved       = false;
-        var objectName      = options.type + new Date().getTime() + Math.floor(Math.random()*111);
+        var objectName      = options.type + new Date().getTime() + Math.floor(Math.random()*999999);
         objects[objectName] = options;
         
         /**
