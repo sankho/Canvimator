@@ -26,7 +26,7 @@
     var rtrim = /^(\s|\u00A0)+|(\s|\u00A0)+$/g;
 
     // extend options
-    var globalOptions = extend({
+    var globalOptions = this.globalOptions = extend({
         timeout   : 20,         // how often the board gets redrawn,
         color     : '#000'
     },userOptions);
@@ -191,7 +191,7 @@
     };
 
     function isArray( obj ) {
-        return toString.call(obj) === "[object Array]";
+        return obj.toString() === "[object Array]";
     };
 
     function isPlainObject( obj ) {
