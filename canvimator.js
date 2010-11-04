@@ -1,11 +1,7 @@
-/**
- * base constructor function
- *
- * @param {string} canvasId
- * @param {object} userOptions
- * @public
- */
 ;var CANVIMATOR = (function(undefined) {
+    
+    /** VERY PRIVATE VARIABLES ** 
+     */
     
     /**
      * This object contains the functions that draw predefined
@@ -65,10 +61,21 @@
         }
     }
 
+    /**
+     * Public API for CANVIMATOR
+     */
     return { 
-
+        
+        // allows for extension of object types
         objects : defaultObjects,
-            
+        
+        /**
+         * base constructor function
+         *
+         * @param {string} canvasId
+         * @param {object} userOptions
+         * @public
+         */
         init : function(canvasId,userOptions) {
         
             var defaultObjects = CANVIMATOR.objects;
@@ -389,12 +396,17 @@
                         // an object to store what options are being changed to this canvas object
                         var changes    = {};
                         
+                        // get the amount of times the animation should occur to reach it's end point
+                        var times = Math.floor(time / globalOptions.timeout);
+                        
                         // iterate over each option and add to changes when necessary
                         for (opt in endOptions) {
                             if (endOptions[opt] !== objects[objectName][opt]) {
+                                var interval = (endOptions[opt] - objects[objectName][opt]) / times;
                                 changes[opt] = {
-                                    end     : endOptions[opt],
-                                    begin   : objects[objectName][opt]
+                                    end      : endOptions[opt],
+                                    begin    : objects[objectName][opt],
+                                    interval : interval
                                 }
                                 if (opt === 'color') {
                                     objects[objectName].endColor   = changes.color.end   || globalOptions.color;
@@ -402,9 +414,6 @@
                                 }
                             }
                         }
-                        
-                        // get the amount of times the animation should occur to reach it's end point
-                        var times = Math.floor(time / globalOptions.timeout);
                         
                         // fires the function below & starts the animation
                         adjustValuesAndDraw(times);
@@ -429,11 +438,7 @@
                                         colorChange(objects[objectName]);
                                     } else {
                                         // normal integer based stuff i.e. coors width radius etc
-                                        var endVal   = changes[opt].end;
-                                        var startVal = changes[opt].begin;
-                                        var interval = (endVal - startVal) / times;
-                                        var curVal   = objects[objectName][opt];
-                                        objects[objectName][opt] = curVal + interval;
+                                        objects[objectName][opt] = objects[objectName][opt] + changes[opt].interval;
                                     }
                                 }    
                                 
