@@ -13,18 +13,18 @@
 		<script>
 		(function() {
 			
+			// Add a custom object
+			CANVIMATOR.objects.deathStar = function(obj,ctx) {
+				ctx.beginPath();
+				ctx.arc(obj.x, obj.y, obj.radius, Math.PI*1.5, Math.PI*2, true);
+				ctx.closePath();
+				ctx.fill();
+			}
+			
 			// Startup Canvimator w/ the ID of the canvas in question
-		    var canv   = new CANVIMATOR('game',{
+		    var canv   = new CANVIMATOR.init('game',{
 		        timeout : 15		// you may wanna set the timeout to be browser specific
 		    });
-
-			// Add a custom object
-			canv.defaultObjects.deathStar = function(obj) {
-				canv.ctx.beginPath();
-				canv.ctx.arc(obj.x, obj.y, obj.radius, Math.PI*1.5, Math.PI*2, true);
-				canv.ctx.closePath();
-				canv.ctx.fill();
-			}
 
 		    //* Setup our Objects
 		    var deathStar = canv.addObject({

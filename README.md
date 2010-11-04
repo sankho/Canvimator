@@ -10,7 +10,7 @@ I'd check the examples folder, if I were you.
 
 But here's the skinny. Let's say you have an HTML document with a Canvas tag with an ID of.... "canvas." Here's how you would add a circle, and then animate it's position and color, twice.
 
-    var canv = new CANVIMATOR('canvas');
+    var canv = new CANVIMATOR.init('canvas');
     
     var circle = canv.addObject({
         type    : 'circle',
@@ -38,6 +38,14 @@ This is very much under development, so if you wanna use it, please refer to the
 
 The "type" parameter in addObject supports the following object types: circle, square, and rectangle.
 
+See the object literal defined as CANVIMATOR.objects for more info.
+
 #### Adding custom object types
 
-Please see examples/addObject.html
+Fair warning, I'd refer to addObject.html in the examples. 
+But you can add your own objects like so:
+
+	CANVIMATOR.objects.newObject = function(obj,ctx) {
+		// iterate over the obj variable & context of the canvas
+	}
+	

@@ -7,6 +7,7 @@
 	<body>
 		
 		<canvas id="game" height="500" width="800"></canvas>
+		<canvas id="game2" height="500" width="800"></canvas>
 		
 		<script src="../canvimator.js"></script>
 		
@@ -14,7 +15,7 @@
 		(function() {
 			
 			// Startup Canvimator w/ the ID of the canvas in question
-		    var canv   = new CANVIMATOR('game',{
+		    var canv   = new CANVIMATOR.init('game',{
 		        timeout : 15,
 				color	: 'darkgreen'
 		    });
@@ -84,7 +85,26 @@
 		        },700)
 		    },200);
 		    //*/
+			
+			// Startup Canvimator w/ the ID of the canvas in question
+		    var canv2   = new CANVIMATOR.init('game2',{
+		        timeout : 50,
+		    });
 
+		    //* Setup our Objects
+		    var circle2 = canv2.addObject({
+		        type	: 'circle',
+				x       : Math.floor(Math.random()*251),
+		        y       : Math.floor(Math.random()*401),
+		        radius  : Math.floor(Math.random()*80),
+		    });
+		
+			circle2.animate({
+				x	:30,
+				y	:10,
+				radius:100
+			})
+		
 		})()
 		</script>
 	</body>
