@@ -18,7 +18,11 @@
         },
         square : function(obj,ctx) {
             rect(ctx,obj.x,obj.y,obj.side,obj.side,obj.stroke);
-        }
+        },
+		text : function(obj, ctx) {
+			ctx.font = obj.font || "bold 12px Helvetica"; 
+			ctx.fillText(obj.text, obj.x, obj.y);
+		}
         
     };
 
