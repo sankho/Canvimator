@@ -393,7 +393,7 @@
                      * @param {integer} time
                      * @param {function} callback
                      */
-                    animate : function(endOptions,time,callback) {
+                    animate : function(endOptions,time,callback,easing) {
                             
                         var time = time || 500;
                         
@@ -442,7 +442,13 @@
                                         colorChange(objects[objectName]);
                                     } else {
                                         // normal integer based stuff i.e. coors width radius etc
-                                        objects[objectName][opt] = objects[objectName][opt] + changes[opt].interval;
+                                        if(easing) {
+                                            // x, time, begin, change, duration
+                                            var interval = easing(0, ((times - time) + 1), 0, 1, times);
+                                            objects[objectName][opt] = interval * changes[opt].end;
+                                        } else {
+                                            objects[objectName][opt] = objects[objectName][opt] + changes[opt].interval;
+                                        }
                                     }
                                 }    
                                 
@@ -453,6 +459,8 @@
                                 setTimeout(function() {
                                     adjustValuesAndDraw(time);
                                 },globalOptions.timeout);
+                                
+                                
                                 
                             } else if (typeof callback === 'function') {
                                 callback();
