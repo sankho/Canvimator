@@ -29,11 +29,30 @@
 			
 		    canv.draw();        // draw the board
 
+			// access easing object attached to CANVIMATOR
+			var easing = CANVIMATOR.easing.easeOutBounce;
+			
+			// move it 
 		    circle.animate({
 		        x:500,
 		        y:300,
-		        radius:100
-		    },1500,function() {},EASING['easeOutElastic']);
+		    },1500,function() {},easing);
+		
+			// change colors and properties
+			circle.animate({
+				radius:80,
+				color : '#33d'
+			},600,function() {
+				circle.animate({
+					radius:60,
+					color: 'lightyellow'
+				},500,function() {
+					circle.animate({
+						radius:100,
+						color:'#d33'
+					},400);
+				})
+			},easing)
 		
 		})()
 		</script>

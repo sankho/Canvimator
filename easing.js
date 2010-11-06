@@ -5,7 +5,7 @@
 // t: current time, b: begInnIng value, c: change In value, d: duration
 // EASING['jswing'] = EASING['swing'];
 
-var EASING = 
+CANVIMATOR.easing = 
 {
 	def: 'easeOutQuad',
 	swing: function (x, t, b, c, d) {
