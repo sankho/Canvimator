@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Canvimator</title>
+	</head>
+	<body>
+		
+		<canvas id="game" height="500" width="800"></canvas>
+		
+		<script src="../canvimator.js"></script>
+		
+		<script>
+		(function() {
+			
+			// Startup Canvimator w/ the ID of the canvas in question
+		    var canv   = new CANVIMATOR.init('game',{
+		        timeout : 15		// you may wanna set the timeout to be browser specific
+		    });
+            
+            var dd = canv.addObject({
+                type    : 'image',
+                src     : './dd.png',
+                
+            })
+            
+		})()
+		</script>
+	</body>
+</html>
