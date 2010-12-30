@@ -3,8 +3,8 @@
     /** VERY PRIVATE VARIABLES ** 
      */
     
-     // for trimming whitespace
-     var rtrim = /^(\s|\u00A0)+|(\s|\u00A0)+$/g;
+    // for trimming whitespace
+    var rtrim = /^(\s|\u00A0)+|(\s|\u00A0)+$/g;
     
     /**
      * This object contains the functions that draw predefined
@@ -27,13 +27,25 @@
 			ctx.fillText(obj.text, obj.x, obj.y);
 		},
 		image : function(obj,ctx) {
-		    var img = new Image();
-		    img.src = obj.src;
-		    img.onload = function() {
-		        ctx.drawImage(img,obj.x,obj.y,img.width,img.height);
-		    }
+		    if (typeof obj.isLoaded === 'undefined') {
+		        obj.isLoaded = false;
+		        var img = new Image();
+		        img.src    = obj.src;
+		        img.onload = function() {
+		            obj.isLoaded = true;
+                    obj.img      = this;
+		            obj.width    = this.width;
+		            obj.height   = this.height;
+        	        drawImage();
+		        }
+	        } else if (obj.isLoaded) {
+	            drawImage();
+	        }
+	        function drawImage() {
+	            ctx.drawImage(obj.img,obj.x,obj.y,obj.width,obj.height);
+	        }
 		}
-        
+    
     };
 
     /**
@@ -412,6 +424,11 @@
                         
                         // iterate over each option and add to changes when necessary
                         for (opt in endOptions) {
+                            if (typeof objects[objectName][opt] === 'undefined') {
+                                // temporary fix? maybe some type casting over the object[objectName].type value
+                                // for some other default values? they should all be integers, no? 
+                                objects[objectName][opt] = 0;
+                            }
                             if (endOptions[opt] !== objects[objectName][opt]) {
                                 var interval = (endOptions[opt] - objects[objectName][opt]) / times;
                                 changes[opt] = {
