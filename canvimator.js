@@ -29,7 +29,9 @@
 		image : function(obj,ctx) {
 		    var img = new Image();
 		    img.src = obj.src;
-		    ctx.drawImage(img,obj.x,obj.y,img.width,img.height);
+		    img.onload = function() {
+		        ctx.drawImage(img,obj.x,obj.y,img.width,img.height);
+		    }
 		}
         
     };
