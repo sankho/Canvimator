@@ -23,14 +23,15 @@
                 type    : 'image',
                 src     : './images/dd.png',
                 x       : 0,
-                y       : 150,
+                y       : 0,
             });
             
             canv.draw();
             
             dd.animate({
                 x : 200,
-            },1000,function() {
+                y : 150
+            },1500,function() {
                 dd.animate({
                     height  : 200,
                     width   : 160,
