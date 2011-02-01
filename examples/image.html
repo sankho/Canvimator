@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Canvimator</title>
+	</head>
+	<body>
+		
+		<canvas id="game" height="500" width="800"></canvas>
+		
+		<script src="../canvimator.js"></script>
+		<script src="../easing.js"></script>
+		
+		<script>
+		(function() {
+			
+			// Startup Canvimator w/ the ID of the canvas in question
+		    var canv   = new CANVIMATOR.init('game',{
+		        timeout : 15		// you may wanna set the timeout to be browser specific
+		    });
+            
+            var dd = canv.addObject({
+                type    : 'image',
+                src     : './images/dd.png',
+                x       : 0,
+                y       : 0,
+            });
+            
+            canv.draw();
+            
+            dd.animate({
+                x : 200,
+                y : 150
+            },1500,function() {
+                dd.animate({
+                    height  : 200,
+                    width   : 160,
+                    y       : 10
+                },1000,function() {
+                    dd.animate({
+                        x   : 900
+                    },300)
+                });
+            },EASING['easeOutElastic']);
+
+		})();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Canvimator</title>
+	</head>
+	<body>
+		
+		<canvas id="game" height="500" width="800"></canvas>
+		
+		<script src="../canvimator.js"></script>
+		
+		<script>
+		(function() {
+			
+			// Startup Canvimator w/ the ID of the canvas in question
+		    var canv   = new CANVIMATOR.init('game',{
+		        timeout : 15		// you may wanna set the timeout to be browser specific
+		    });
+
+            var colors = [
+                'rgb(204,57,16)',
+                'rgb(241,242,192)',
+                'rgb(204,197,158)',
+                'rgb(143,166,142)',
+                'rgb(51,47,41)'
+            ]
+
+            var x = 400, y = 100, a = 0;
+            spiral(x,y);
+        
+            function spiral(x,y) {
+                
+                var circle = canv.addObject({
+                    type    : 'circle',
+                    x       : x,
+                    y       : y,
+                    radius  : 1
+                });
+                
+                canv.draw();
+                
+                circle.animate({
+                    radius  : 10,
+                    color   : colors[(Math.floor(Math.random()*colors.length))]
+                },75, function() {
+                    
+                    var _x = x + Math.cos(a * (Math.PI/220)) * 40;
+                    var _y = y + Math.sin(a * (Math.PI/140)) * 40;
+                    
+                    a = a + 10;
+                    x = x + 10;
+                    y = y + 10;
+
+                    spiral(_x,_y);
+                    
+                });
+                
+            }
+		
+		})()
+		</script>
+	</body>
+</html>
