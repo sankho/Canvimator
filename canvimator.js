@@ -28,21 +28,26 @@
 		},
 		image : function(obj,ctx) {
 		    if (typeof obj.isLoaded === 'undefined') {
-		        obj.isLoaded = false;
-		        var img = new Image();
-		        img.src    = obj.src;
-		        img.onload = function() {
-		            obj.isLoaded = true;
-                    obj.img      = this;
-		            obj.width    = this.width;
-		            obj.height   = this.height;
-        	        drawImage();
-		        }
+		         obj.isLoaded = false;
+		         var img = new Image();
+		         img.src    = obj.src;
+		         img.onload = function() {
+		             obj.isLoaded = true;
+                     obj.img      = this;
+		             obj.width    = obj.width  || obj.dWidth  || this.width;
+		             obj.height   = obj.height || obj.dHeight || this.height;
+        	         drawImage();
+		         }
 	        } else if (obj.isLoaded) {
-	            drawImage();
+	             drawImage();
 	        }
+
 	        function drawImage() {
-	            ctx.drawImage(obj.img,obj.x,obj.y,obj.width,obj.height);
+                if (obj.dx !== undefined && obj.dy !== undefined) {
+                    ctx.drawImage(obj.img,obj.dx,obj.dy,obj.dWidth,obj.dHeight,obj.x,obj.y,obj.width,obj.height);
+                } else {
+    	            ctx.drawImage(obj.img,obj.x,obj.y,obj.width,obj.height);
+                }
 	        }
 		}
     
