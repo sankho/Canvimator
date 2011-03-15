@@ -1,5 +1,17 @@
 ;var CANVIMATOR = (function(undefined) {
     
+    // shim layer with setTimeout fallback
+    var requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function(/* function */ callback, /* DOMElement */ element){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
+
     /** VERY PRIVATE VARIABLES ** 
      */
     
@@ -28,22 +40,27 @@
 		},
 		image : function(obj,ctx) {
 		    if (typeof obj.isLoaded === 'undefined') {
-		         obj.isLoaded = false;
-		         var img = new Image();
-		         img.src    = obj.src;
-		         img.onload = function() {
-		             obj.isLoaded = true;
-                     obj.img      = this;
-		             obj.width    = obj.width  || obj.dWidth  || this.width;
-		             obj.height   = obj.height || obj.dHeight || this.height;
-        	         drawImage();
-		         }
+		        obj.isLoaded = false;
+		        var img = new Image();
+		        img.src    = obj.src;
+		        img.onload = function() {
+		            obj.isLoaded = true;
+                    obj.img      = this;
+                    obj.width    = obj.width  || obj.dWidth  || this.width;
+	       	        obj.height   = obj.height || obj.dHeight || this.height;
+        	        drawImage();
+		        }
 	        } else if (obj.isLoaded) {
-	             drawImage();
+	            drawImage();
 	        }
 
 	        function drawImage() {
+                
                 if (obj.dx !== undefined && obj.dy !== undefined) {
+                    if (obj.snapToSprite) {
+                        obj.width  = obj.dWidth;
+                        obj.height = obj.dHeight;
+                    }
                     ctx.drawImage(obj.img,obj.dx,obj.dy,obj.dWidth,obj.dHeight,obj.x,obj.y,obj.width,obj.height);
                 } else {
     	            ctx.drawImage(obj.img,obj.x,obj.y,obj.width,obj.height);
@@ -485,7 +502,7 @@
                                 
                                 scheduleDraw();
                                 
-                                setTimeout(function() {
+                                requestAnimFrame(function() {
                                     adjustValuesAndDraw(time);
                                 },globalOptions.timeout);
                                 
@@ -510,7 +527,7 @@
                      */
                     change : function(o,time,callback) {
                         var time     = time || 0;
-                        setTimeout(function() {
+                        requestAnimFrame(function() {
                             extend(options,o);
                             scheduleDraw();
                             if (isFunction(callback)) {
