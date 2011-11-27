@@ -17,6 +17,8 @@
     
     // for trimming whitespace
     var rtrim = /^(\s|\u00A0)+|(\s|\u00A0)+$/g;
+
+    var pieTimesTwo = Math.PI*2;
     
     /**
      * This object contains the functions that draw predefined
@@ -80,7 +82,7 @@
      */
     function circle(ctx,x,y,r,stroke) {
         ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI*2, true);
+        ctx.arc(x, y, r, 0, pieTimesTwo, true);
         ctx.closePath();
         if (stroke) {
             ctx.stroke();
